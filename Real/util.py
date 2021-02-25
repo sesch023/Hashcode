@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+from random import randint
 
 
 class Street(object):
@@ -7,7 +8,7 @@ class Street(object):
         self.end_int = 0
         self.street_name = ""
         self.time_length = 0
-        self.green_time = 1
+        self.green_time = randint(1, 6)
         self.current_green_time = self.green_time
 
         self.car_queue = deque()
@@ -54,6 +55,7 @@ class Intersection(object):
 
 class StreetMap(object):
     def __init__(self):
+        self.longest_deques = []
         self.current_duration = 0
         self.duration = 0
         self.intersect_num = 0
@@ -107,8 +109,7 @@ class StreetMap(object):
                 else:
                     current_street_green.current_green_time -= 1
 
-            for car in self.car_paths:
-                print(car)
+            print("Cars Left: " + str(sum([1 for car in self.car_paths if len(car.streets) > 0])))
 
             self.current_duration += 1
 
@@ -157,7 +158,20 @@ def read_file(file_path):
     return streetmap
 
 
-streetmap = read_file("files/b.txt")
-print(streetmap)
-streetmap.start_simulation()
+def write_scores(path, streetmap):
+    with open(path, "w") as file:
+        file.write(str(len(streetmap.nodes)) + "\n")
+
+        for i in range(len(streetmap.nodes)):
+            file.write(str(i) + "\n")
+            file.write(str(len(streetmap.nodes[i].incomming_streets)) + "\n")
+            for street in streetmap.nodes[i].incomming_streets:
+                file.write(street.street_name + " " + str(street.green_time) + "\n")
+
+
+files = ["a.txt", "b.txt", "c.txt", "d.txt", "e.txt", "f.txt"]
+
+for file in files:
+    streetmap = read_file("files/" + file)
+    write_scores("scores/" + file, streetmap)
 
