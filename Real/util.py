@@ -16,6 +16,9 @@ class Street(object):
         return f"({str(self.start_int)}, {str(self.end_int)}, {self.street_name}, " \
                f"{str(self.time_length)}, {str(self.green_time)})"
 
+    def __repr__(self):
+        return self.__str__()
+
 
 class CarPath(object):
     def __init__(self):
@@ -41,6 +44,12 @@ class Intersection(object):
         self.outgoing_streets = []
         self.incomming_streets = []
         self.current_green = 0
+
+    def __str__(self):
+        return f"({str(self.outgoing_streets)}, {str(self.incomming_streets)}, {self.current_green}"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class StreetMap(object):
@@ -89,6 +98,15 @@ class StreetMap(object):
                 if car.drive_time > 0:
                     car.drive_time -= 1
 
+            for node in self.nodes.values():
+                current_street_green = node.incomming_streets[node.current_green]
+                if current_street_green.current_green_time <= 1:
+                    node.current_green += 1
+                    if node.current_green >= len(node.incomming_streets):
+                        node.current_green = 0
+                else:
+                    current_street_green.current_green_time -= 1
+
             for car in self.car_paths:
                 print(car)
 
@@ -133,13 +151,13 @@ def read_file(file_path):
 
             car_obj.current_position = streetmap.streets[car[1]]
             car_obj.current_position.car_queue.append(car_obj)
-            print(car_obj)
+            streetmap.car_paths.append(car_obj)
             car_count += 1
 
     return streetmap
 
 
-streetmap = read_file("files/a.txt")
+streetmap = read_file("files/b.txt")
 print(streetmap)
 streetmap.start_simulation()
 
