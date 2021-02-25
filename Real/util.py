@@ -2,13 +2,15 @@ from collections import defaultdict, deque
 
 
 class Street(object):
-    start_int = 0
-    end_int = 0
-    street_name = ""
-    time_length = 0
-    green_time = 0
+    def __init__(self):
+        self.start_int = 0
+        self.end_int = 0
+        self.street_name = ""
+        self.time_length = 0
+        self.green_time = 1
+        self.current_green_time = self.green_time
 
-    car_queue = deque()
+        self.car_queue = deque()
 
     def __str__(self):
         return f"({str(self.start_int)}, {str(self.end_int)}, {self.street_name}, " \
@@ -16,8 +18,11 @@ class Street(object):
 
 
 class CarPath(object):
-    path_length = 0
-    streets = []
+    def __init__(self):
+        self.path_length = 0
+        self.streets = deque()
+        self.current_position = None
+        self.drive_time = 0
 
     def __str__(self):
         street_string = ""
@@ -25,26 +30,32 @@ class CarPath(object):
         for element in self.streets:
             street_string += str(element) + ", "
 
-        return f"{str(self.path_length)}, [{street_string}]"
+        return f"{str(self.path_length)}, {str(self.drive_time)}, [{street_string}]"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Intersection(object):
-    outgoing_streets = []
-    incomming_streets = []
+    def __init__(self):
+        self.outgoing_streets = []
+        self.incomming_streets = []
+        self.current_green = 0
 
 
 class StreetMap(object):
-    current_duraction = 0
-    duration = 0
-    intersect_num = 0
-    num_streets = 0
-    num_cars = 0
-    points_per_Car = 0
+    def __init__(self):
+        self.current_duration = 0
+        self.duration = 0
+        self.intersect_num = 0
+        self.num_streets = 0
+        self.num_cars = 0
+        self.points_per_Car = 0
 
-    streets = {}
-    nodes = defaultdict(Intersection)
+        self.streets = {}
+        self.nodes = defaultdict(Intersection)
 
-    car_paths = []
+        self.car_paths = []
 
     def __str__(self):
         street_string = ""
@@ -61,7 +72,27 @@ class StreetMap(object):
                f"{str(self.nodes)} \n [{car_string}]"
 
     def start_simulation(self):
+        while self.current_duration < self.duration:
+            print(self.current_duration)
+            for node in self.nodes.values():
+                current_street = node.incomming_streets[node.current_green]
+                if len(current_street.car_queue) and current_street.car_queue[0].drive_time == 0:
+                    car = current_street.car_queue.popleft()
+                    car.streets.popleft()
+                    if len(car.streets) > 0:
+                        next_street = car.streets[0]
+                        car.current_position = next_street
+                        car.drive_time = next_street.time_length
+                        next_street.car_queue.append(car)
 
+            for car in self.car_paths:
+                if car.drive_time > 0:
+                    car.drive_time -= 1
+
+            for car in self.car_paths:
+                print(car)
+
+            self.current_duration += 1
 
 
 def read_file(file_path):
@@ -100,10 +131,15 @@ def read_file(file_path):
             for street_name in car[1:]:
                 car_obj.streets.append(streetmap.streets[street_name])
 
-            streetmap.car_paths.append(car_obj)
+            car_obj.current_position = streetmap.streets[car[1]]
+            car_obj.current_position.car_queue.append(car_obj)
+            print(car_obj)
             car_count += 1
 
     return streetmap
 
 
-print(read_file("files/a.txt"))
+streetmap = read_file("files/a.txt")
+print(streetmap)
+streetmap.start_simulation()
+
