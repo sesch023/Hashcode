@@ -851,7 +851,7 @@ dgf-dc 1
 iag-dc 1
 jbf-dc 1
 fjb-dc 1
-iej-dc 3
+iej-dc 1992
 ifh-dc 1
 dde-dc 1
 bbgj-dc 1
@@ -1551,7 +1551,7 @@ bh-gg 1
 hfa-gg 1
 caj-gg 1
 jdj-gg 1
-cdh-gg 1
+cdh-gg 1992
 ihi-gg 1
 jhg-gg 1
 beif-gg 1
@@ -2525,7 +2525,7 @@ gjh-bbj 1
 eh-bbj 1
 baja-bbj 1
 bbag-bbj 1
-fag-bbj 5
+fag-bbj 1992
 ige-bbj 1
 120
 17
@@ -3167,7 +3167,7 @@ jhe-bfi 1
 ijh-bfi 1
 gdi-bfi 1
 bcfg-bfi 1
-gaa-bfi 2
+gaa-bfi 1992
 ecj-bfi 1
 bgci-bfi 1
 159
@@ -3666,9 +3666,9 @@ cjg-bjf 1
 hie-bjf 1
 hii-bjf 1
 ecg-bjf 1
-baff-bjf 1
+baff-bjf 1992
 bccc-bjf 1
-hic-bjf 1
+hic-bjf 1992
 196
 7
 ee-bjg 1
@@ -4110,7 +4110,7 @@ efd-ccf 1
 hdj-ccf 1
 baid-ccf 1
 ihi-ccf 1
-ga-ccf 1
+ga-ccf 1992
 hei-ccf 1
 bfdd-ccf 1
 226
@@ -4840,10 +4840,10 @@ eje-cie 1
 hjb-cie 1
 bih-cie 1
 dee-cie 1
-jfi-cie 1
+jfi-cie 1992
 bhd-cie 1
 bbbi-cie 1
-gg-cie 1992
+gg-cie 1
 285
 12
 id-cif 1
@@ -5678,7 +5678,7 @@ iia-dfi 1
 dcc-dfi 1
 hgh-dfi 1
 baac-dfi 1
-egd-dfi 1
+egd-dfi 1992
 359
 7
 eb-dfj 1
@@ -6521,7 +6521,7 @@ cbj-eed 1
 ddf-eed 1
 gcd-eed 1
 fcg-eed 1
-iaa-eed 1
+iaa-eed 1992
 jhc-eed 1
 444
 5
@@ -7674,7 +7674,7 @@ bajf-fhb 1
 hab-fhb 1
 beaa-fhb 1
 bfcb-fhb 1
-beeb-fhb 1
+beeb-fhb 1992
 572
 9
 cba-fhc 1
@@ -7857,7 +7857,7 @@ baee-fjc 1
 gab-fjc 1
 bcff-fjc 1
 jii-fjc 1
-cie-fjc 1
+cie-fjc 1992
 hh-fjc 1
 hdf-fjc 1
 593

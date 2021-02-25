@@ -110,9 +110,9 @@ class StreetMap(object):
                     current_street_green.current_green_time -= 1
 
             for street in self.streets.values():
-                if len(street.car_queue) > max(int(streetmap.num_cars * 0.1), 4):
+                if len(street.car_queue) > max(int(streetmap.num_cars * 0.005), 4):
                     if green_light_values[street.street_name] < streetmap.duration:
-                        green_light_values[street.street_name] = min(streetmap.duration, green_light_values[street.street_name] + int(streetmap.duration * 0.2))
+                        green_light_values[street.street_name] = min(streetmap.duration, green_light_values[street.street_name] + int(streetmap.duration * 0.01))
                 elif len(street.car_queue) == 0:
                     if green_light_values[street.street_name] > 1:
                         green_light_values[street.street_name] = max(1, green_light_values[street.street_name] - int(streetmap.duration * 0.05))
@@ -187,7 +187,7 @@ def write_scores(path, streetmap):
                 file.write(street.street_name + " " + str(street.green_time) + "\n")
 
 
-files = ["f.txt"]
+files = ["e.txt"]
 
 for file in files:
     print(file)
