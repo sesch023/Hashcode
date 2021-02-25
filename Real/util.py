@@ -1,6 +1,7 @@
 from collections import defaultdict, deque
 from random import randint
 
+green_light_values = dict()
 
 class Street(object):
     def __init__(self):
@@ -55,7 +56,7 @@ class Intersection(object):
 
 class StreetMap(object):
     def __init__(self):
-        self.longest_deques = []
+        self.longest_deques = {}
         self.current_duration = 0
         self.duration = 0
         self.intersect_num = 0
@@ -84,7 +85,6 @@ class StreetMap(object):
 
     def start_simulation(self):
         while self.current_duration < self.duration:
-            print(self.current_duration)
             for node in self.nodes.values():
                 current_street = node.incomming_streets[node.current_green]
                 if len(current_street.car_queue) and current_street.car_queue[0].drive_time == 0:
@@ -109,7 +109,17 @@ class StreetMap(object):
                 else:
                     current_street_green.current_green_time -= 1
 
-            print("Cars Left: " + str(sum([1 for car in self.car_paths if len(car.streets) > 0])))
+            for street in self.streets.values():
+                if len(street.car_queue) > max(int(streetmap.num_cars * 0.1), 4):
+                    if green_light_values[street.street_name] < streetmap.duration:
+                        green_light_values[street.street_name] = min(streetmap.duration, green_light_values[street.street_name] + int(streetmap.duration * 0.2))
+                elif len(street.car_queue) == 0:
+                    if green_light_values[street.street_name] > 1:
+                        green_light_values[street.street_name] = max(1, green_light_values[street.street_name] - int(streetmap.duration * 0.05))
+
+            if self.current_duration % 1000 == 0:
+                print(self.current_duration)
+                print("Cars Left: " + str(sum([1 for car in self.car_paths if len(car.streets) > 0])))
 
             self.current_duration += 1
 
@@ -135,11 +145,19 @@ def read_file(file_path):
             street_obj.street_name = street[2]
             street_obj.time_length = int(street[3])
 
+            if street_obj.street_name in green_light_values:
+                street_obj.green_time = green_light_values[street_obj.street_name]
+                street_obj.current_green_time = green_light_values[street_obj.street_name]
+
             streetmap.nodes[street_obj.end_int].incomming_streets.append(street_obj)
             streetmap.nodes[street_obj.start_int].outgoing_streets.append(street_obj)
 
             streetmap.streets[street_obj.street_name] = street_obj
             street_count += 1
+
+        if len(green_light_values) == 0:
+            for street in streetmap.streets.values():
+                green_light_values[street.street_name] = street.green_time
 
         car_count = 0
         while car_count < streetmap.num_cars:
@@ -169,9 +187,13 @@ def write_scores(path, streetmap):
                 file.write(street.street_name + " " + str(street.green_time) + "\n")
 
 
-files = ["a.txt", "b.txt", "c.txt", "d.txt", "e.txt", "f.txt"]
+files = ["f.txt"]
 
 for file in files:
-    streetmap = read_file("files/" + file)
-    write_scores("scores/" + file, streetmap)
+    print(file)
+    for i in range(100):
+        streetmap = read_file("files/" + file)
+        streetmap.start_simulation()
+        write_scores("scores/" + file, streetmap)
+    green_light_values = dict()
 
