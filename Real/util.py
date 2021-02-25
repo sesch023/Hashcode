@@ -5,6 +5,7 @@ class Street(object):
     end_int = 0
     street_name = ""
     time_length = 0
+    green_time = 0
 
 
 class CarPath(object):
@@ -61,5 +62,6 @@ def read_file(file_path):
             car_count += 1
 
     return streetmap
+
 
 read_file("files/a.txt")
